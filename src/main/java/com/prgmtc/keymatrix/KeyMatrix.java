@@ -1,7 +1,9 @@
-
 package com.prgmtc.keymatrix;
 
-import vista.Login;
+import com.prgmtc.keymatrix.vista.*;
+import com.prgmtc.keymatrix.modelo.BaseDat;
+
+
 
 /**
  *
@@ -10,7 +12,11 @@ import vista.Login;
 public class KeyMatrix {
 
     public static void main(String[] args) {
-        Login lg = new Login();
-        lg.setVisible(true);
+        frmPersona pe = new frmPersona();
+        pe.setVisible(true);
+        BaseDat objC = new BaseDat();
+        objC.establecerConexion();
+
     }
+
 }
