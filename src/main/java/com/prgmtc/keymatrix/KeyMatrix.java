@@ -1,8 +1,10 @@
 package com.prgmtc.keymatrix;
 
 import com.prgmtc.keymatrix.vista.*;
-import com.prgmtc.keymatrix.modelo.BaseDat;
-
+import com.prgmtc.keymatrix.modelo.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import com.prgmtc.keymatrix.modelo.Usuario;
 
 
 /**
@@ -12,11 +14,9 @@ import com.prgmtc.keymatrix.modelo.BaseDat;
 public class KeyMatrix {
 
     public static void main(String[] args) {
-        frmPersona pe = new frmPersona();
-        pe.setVisible(true);
-        BaseDat objC = new BaseDat();
-        objC.establecerConexion();
-
+        Login lg = new Login();
+        lg.setVisible(true);
+        
     }
 
 }

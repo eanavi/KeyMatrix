@@ -8,22 +8,24 @@ public class Persona {
     private String Apellidos;
     private String Ci;
     private Date FechaNac;
+    private char Tipo;
     private char Estado;
-    
-    public Persona(){
-        
+
+    public Persona() {
     }
 
-    public Persona(int idPersona, String Nombres, String Apellidos, 
-            String Ci, Date FechaNac, char Estado) {
-        this.idPersona = idPersona;
+        
+    public Persona(String Nombres, String Apellidos, 
+            String Ci, Date FechaNac, char Tipo, char Estado) {
         this.Nombres = Nombres;
         this.Apellidos = Apellidos;
         this.Ci = Ci;
         this.FechaNac = FechaNac;
+        this.Tipo = Tipo;
         this.Estado = Estado;
     }
-
+    
+    
     public int getIdPersona() {
         return idPersona;
     }
@@ -63,6 +65,15 @@ public class Persona {
     public void setFechaNac(Date FechaNac) {
         this.FechaNac = FechaNac;
     }
+
+    public char getTipo() {
+        return Tipo;
+    }
+
+    public void setTipo(char Tipo) {
+        this.Tipo = Tipo;
+    }
+
 
     public char getEstado() {
         return Estado;

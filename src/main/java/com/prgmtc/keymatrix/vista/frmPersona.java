@@ -1,6 +1,8 @@
 package com.prgmtc.keymatrix.vista;
 
 import com.prgmtc.keymatrix.vista.per.pnBusqueda;
+import com.prgmtc.keymatrix.vista.per.pnNuevoRegistro;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -140,6 +142,9 @@ public class frmPersona extends javax.swing.JFrame {
         lblOp2.setText("Nuevo");
         lblOp2.setToolTipText("");
         lblOp2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblOp2MouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 lblOp2MouseEntered(evt);
             }
@@ -164,6 +169,9 @@ public class frmPersona extends javax.swing.JFrame {
         lblOp3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblOp3.setText("Editar");
         lblOp3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblOp3MouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 lblOp3MouseEntered(evt);
             }
@@ -210,6 +218,8 @@ public class frmPersona extends javax.swing.JFrame {
         pnlMenu.setBounds(0, 200, 200, 400);
 
         pnlContenido.setBackground(new java.awt.Color(255, 255, 255));
+        pnlContenido.setMinimumSize(new java.awt.Dimension(800, 540));
+        pnlContenido.setPreferredSize(new java.awt.Dimension(800, 540));
 
         javax.swing.GroupLayout pnlContenidoLayout = new javax.swing.GroupLayout(pnlContenido);
         pnlContenido.setLayout(pnlContenidoLayout);
@@ -231,13 +241,14 @@ public class frmPersona extends javax.swing.JFrame {
     private void lblOp1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblOp1MouseClicked
         // TODO add your handling code here:
         pnBusqueda pb = new pnBusqueda();
-        pb.setSize(800, 840);
+        pb.setSize(800, 540);
         pb.setLocation(0,0);
         
         pnlContenido.removeAll();
         pnlContenido.add(pb);
         pnlContenido.revalidate();
         pnlContenido.repaint();
+        
         
         
     }//GEN-LAST:event_lblOp1MouseClicked
@@ -282,6 +293,27 @@ public class frmPersona extends javax.swing.JFrame {
         pnlOp4.setBackground(new java.awt.Color(0, 213, 245));
         lblOp4.setForeground(new java.awt.Color(3, 7, 71));
     }//GEN-LAST:event_lblOp4MouseExited
+
+    private void lblOp2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblOp2MouseClicked
+        // TODO add your handling code here:
+        pnNuevoRegistro pn = new pnNuevoRegistro();
+        pn.setSize(800, 540);
+        pn.setLocation(0,0);
+        
+         pnlContenido.removeAll();
+         pnlContenido.add(pn);
+         pnlContenido.revalidate();
+         pnlContenido.repaint();
+        
+    }//GEN-LAST:event_lblOp2MouseClicked
+
+    private void lblOp3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblOp3MouseClicked
+        // TODO add your handling code here:
+        pnBusqueda pnb = new pnBusqueda();
+        if(!pnb.isShowing())
+            JOptionPane.showMessageDialog(null, "Debe Seleccionar una Fila");
+        
+    }//GEN-LAST:event_lblOp3MouseClicked
 
     /**
      * @param args the command line arguments

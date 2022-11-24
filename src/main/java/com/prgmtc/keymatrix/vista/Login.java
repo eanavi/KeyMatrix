@@ -5,6 +5,10 @@ package com.prgmtc.keymatrix.vista;
  *
  * @author Elvis
  */
+
+import com.prgmtc.keymatrix.modelo.UsuarioDAO;
+import com.prgmtc.keymatrix.modelo.Usuario;
+import java.util.Arrays;
 public class Login extends javax.swing.JFrame {
 
     /**
@@ -103,7 +107,7 @@ public class Login extends javax.swing.JFrame {
             btnSalirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(btnSalirLayout.createSequentialGroup()
                 .addComponent(lblSalir)
-                .addGap(0, 1, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         bg.add(btnSalir);
@@ -217,13 +221,24 @@ public class Login extends javax.swing.JFrame {
 
     private void lblEnterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblEnterMouseClicked
         // TODO add your handling code here:
-        if (txtUsuario.getText().length() <= 1){
-            javax.swing.JOptionPane.showMessageDialog(null, "Usuario Vacio", "Advertencia", javax.swing.JOptionPane.WARNING_MESSAGE);
+        if ((txtUsuario.getText().length() <= 1) || (txtClave.getPassword().length <= 1)) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Ambos Campos son necesarios :(", 
+                    "Advertencia", javax.swing.JOptionPane.WARNING_MESSAGE);
+        } else {
+            UsuarioDAO usd = new UsuarioDAO();
+            if ( usd.valida(txtUsuario.getText(), txtClave.getText()))
+            {
+                
+                this.setVisible(false);
+                this.dispose();
+                
+                frmPersona fp = new frmPersona();
+                fp.setVisible(true);
+                
+                
+            }
         }
         
-        if (txtClave.getPassword().length <= 1){
-            javax.swing.JOptionPane.showMessageDialog(null, "Clave Vacia", "Adevertencia", javax.swing.JOptionPane.WARNING_MESSAGE);
-        }
 
         
         
@@ -231,16 +246,8 @@ public class Login extends javax.swing.JFrame {
 
     private void btnEnterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEnterMouseClicked
         // TODO add your handling code here:
-        if(txtUsuario.getText() == "")
-        {
-            javax.swing.JOptionPane.showMessageDialog(null, "Usuario No Especificado",
-                "ERROR_MESSAGE", javax.swing.JOptionPane.ERROR_MESSAGE);
-        };
+                    
         
-        if(String.valueOf(txtClave.getPassword()) == "")
-        {
-            javax.swing.JOptionPane.showMessageDialog(null, "Clave No Especificada","Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-        }
     }//GEN-LAST:event_btnEnterMouseClicked
 
     /**
