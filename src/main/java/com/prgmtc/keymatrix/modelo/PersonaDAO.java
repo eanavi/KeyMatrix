@@ -1,4 +1,3 @@
-
 package com.prgmtc.keymatrix.modelo;
 /*
 Capa de Datos, programa que interactua con la base de datos
@@ -31,7 +30,7 @@ public class PersonaDAO {
         
         String consulta = "select idpersona, nombres, apellidos, ci, "
                 + "fechanac, tipo, estado "
-                + "from persona = " + String.valueOf(idPersona);
+                + "from persona where idPersona = " + String.valueOf(idPersona);
         
         try{
             con = bd.establecerConexion();
@@ -101,25 +100,26 @@ public class PersonaDAO {
         return resultado;
     }
     
-    public boolean modificar(Persona per){
-        boolean sw = false;
-        int resultado;
-        String patron = "yyyy-MM-dd";
-        SimpleDateFormat sdf = new SimpleDateFormat(patron);
-        String consulta = "update persona set nombres='" + per.getNombres()+"', "
-                + "apellidos='" + per.getApellidos() + "', ci='"+per.getCi() + "', "
-                + "fechanac='" + sdf.format(per.getFechaNac()) + "', " + "tipo="
-                + per.getTipo() + "', " + "estado='" + per.getEstado() 
-                + "' where idpersona=" + per.getIdPersona();
+    public Persona PerUsuario(String usuario){
+        Persona per = new Persona();
+        String consulta = "select p.idpersona, p.nombres, p.apellidos, p.ci, p.fechanac, p.tipo, p.estado " 
+                        + " from persona as p inner join usuario as u on p.idpersona = u.idpersona " 
+                        + " where u.nombre_usuario = '" + usuario + "';";
         try{
             con = bd.establecerConexion();
             ps = con.prepareStatement(consulta);
-            resultado = ps.executeUpdate(consulta);
+            rs = ps.executeQuery();
             
-            if(resultado > 0) 
-                sw = true;
-            else 
-                sw = false;
+            while(rs.next()){
+                per.setIdPersona(rs.getInt("idpersona"));
+                per.setNombres(rs.getString("nombres"));
+                per.setApellidos(rs.getString("apellidos"));
+                per.setCi(rs.getString("ci"));
+                per.setFechaNac(rs.getDate("fechanac"));
+                per.setTipo(rs.getString("tipo").charAt(0));
+                per.setEstado(rs.getString("estado").charAt(0));      
+            }
+            
             
         } catch(SQLException sqle){
             System.out.println("SQLState: "  + sqle.getSQLState());
@@ -134,7 +134,37 @@ public class PersonaDAO {
                 }
             }
         }
-        return sw;
+        return per;
+    }
+    
+    public void modificar(Persona per){
+        int resultado;
+        String patron = "yyyy-MM-dd";
+        SimpleDateFormat sdf = new SimpleDateFormat(patron);
+        String consulta = "update persona set nombres='" + per.getNombres()+"', "
+                + "apellidos='" + per.getApellidos() + "', ci='"+per.getCi() + "', "
+                + "fechanac='" + sdf.format(per.getFechaNac()) + "', " + "tipo='"
+                + per.getTipo() + "', " + "estado='" + per.getEstado() 
+                + "' where idpersona=" + per.getIdPersona();
+        try{
+            con = bd.establecerConexion();
+            ps = con.prepareStatement(consulta);
+            ps.execute();
+            
+            
+        } catch(SQLException sqle){
+            System.out.println("SQLState: "  + sqle.getSQLState());
+            System.out.println("SQLErrorCode: "  + sqle.getErrorCode());
+        } finally{
+            if(con != null ){
+                try{
+                    ps.close();
+                    con.close();
+                } catch(SQLException e){
+                    System.out.println("Error " + e.getMessage());
+                }
+            }
+        }
     }
     
     

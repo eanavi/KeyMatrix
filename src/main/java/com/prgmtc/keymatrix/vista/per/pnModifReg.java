@@ -13,18 +13,35 @@ import javax.swing.JTextField;
 
 
 
-public class pnNuevoRegistro extends javax.swing.JPanel {
+public class pnModifReg extends javax.swing.JPanel {
+    private int idPer;
 
-
-    public pnNuevoRegistro() {
+    public pnModifReg(int idPersona) {
+        this.idPer = idPersona;
         initComponents();
-        pnDocente pnd = new pnDocente();
-        pnd.setSize(720, 120);
-        this.pnTipo.removeAll();
-        this.pnTipo.add(pnd);
-        this.pnTipo.revalidate();
-        this.pnTipo.repaint();
-        this.pnTipo.setVisible(true);
+        
+        Persona per = new Persona();
+        PersonaDAO perD = new PersonaDAO();
+        
+        per = perD.cargar(idPer);
+        
+        this.txtApellidos1.setText(per.getApellidos());
+        this.txtNombres.setText(per.getNombres());
+        this.txtCi.setText(per.getCi());
+        this.txtFecha_nacimiento.setDate(per.getFechaNac());
+        switch(per.getTipo()){
+            case 'A'://Empleado
+                    this.cmbTipoPer.setSelectedIndex(2);
+                break;
+            case 'E'://Estudiante
+                    this.cmbTipoPer.setSelectedIndex(1);
+    
+                break;
+            case 'D'://Docente
+                    this.cmbTipoPer.setSelectedIndex(0);
+                break;
+        }
+
     }
 
 
@@ -66,7 +83,7 @@ public class pnNuevoRegistro extends javax.swing.JPanel {
         lblTitulo1.setFont(new java.awt.Font("Roboto Light", 1, 24)); // NOI18N
         lblTitulo1.setForeground(new java.awt.Color(0, 0, 0));
         lblTitulo1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTitulo1.setText("Nuevo Registro");
+        lblTitulo1.setText("Modificar Registro");
         lblTitulo1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jPanel1.add(lblTitulo1);
         lblTitulo1.setBounds(280, 20, 240, 29);
@@ -185,11 +202,22 @@ public class pnNuevoRegistro extends javax.swing.JPanel {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Grabar");
         jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel1MouseExited(evt);
+            }
+        });
         btnGrabar.add(jLabel1);
         jLabel1.setBounds(0, 0, 250, 50);
 
         jPanel1.add(btnGrabar);
-        btnGrabar.setBounds(360, 470, 250, 50);
+        btnGrabar.setBounds(510, 470, 250, 50);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -212,42 +240,51 @@ public class pnNuevoRegistro extends javax.swing.JPanel {
         // TODO add your handling code here:
         if (evt.getSource() == cmbTipoPer){
             int selec = (Integer)cmbTipoPer.getSelectedIndex();
+            
             switch(selec){
-                case 0://Docente
+                case 0://Docente Cargado de datos a la pantalla
                     pnDocente pnd = new pnDocente();
                     pnd.setSize(720, 120);
                     this.pnTipo.removeAll();
+                    Docente dc = new Docente();
+                    dc.Cargar(idPer);
+                    JTextField txCn = (JTextField)pnd.getComponent(1);
+                    txCn.setText(dc.getContrato());
                     this.pnTipo.add(pnd);
                     this.pnTipo.revalidate();
                     this.pnTipo.repaint();
                     break;
-                case 1://Estudiante
+                case 1://Estudiante cargado de datos a la pantalla
                     pnEstudiante pne = new pnEstudiante();
                     pne.setSize(720,120);
                     this.pnTipo.removeAll();
+                    Estudiante st = new Estudiante();
+                    st.Cargar(this.idPer);
+                    JTextField txru = (JTextField)pne.getComponent(1);
+                    txru.setText(String.valueOf(st.getRu()));
+                    JDateChooser dci = (JDateChooser)pne.getComponent(3);
+                    dci.setDate(st.getFecha_ingreso());
                     pnTipo.add(pne);
                     pnTipo.revalidate();
                     pnTipo.repaint();
                     break;
-                case 2://Empleado
+                case 2://Empleado cargado de datos a la pantalla
                     pnEmpleado pna = new pnEmpleado();
                     pna.setSize(720,120);
                     this.pnTipo.removeAll();
+                    Empleado emp = new Empleado();
+                    emp.Cargar(this.idPer);
+                    JTextField txcm = (JTextField)pna.getComponent(1);
+                    txcm.setText(String.valueOf(emp.getCodigo_marcacion()));
+                    JTextField txco = (JTextField)pna.getComponent(3);
+                    txco.setText(emp.getCargo());
                     pnTipo.add(pna);
                     pnTipo.revalidate();
                     pnTipo.repaint();
                     break;
-                    
-                    
             }
-            if (selec == 1){
-        
-            }
+
         }
-        
-        
-        
-        
     }//GEN-LAST:event_cmbTipoPerItemStateChanged
 
     private void btnGrabarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGrabarMouseEntered
@@ -313,6 +350,98 @@ public class pnNuevoRegistro extends javax.swing.JPanel {
         
         this.setVisible(false);    
     }//GEN-LAST:event_btnGrabarMouseClicked
+
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        // TODO add your handling code here:
+        Persona per = new Persona();
+        PersonaDAO perD = new PersonaDAO();
+        per = perD.cargar(this.idPer);
+        
+        //Recuperamos el tipo de datos para comprobar que haya
+        //cambiado el perfil de la persona
+        int selec = (Integer)cmbTipoPer.getSelectedIndex();
+        char tipop;
+        tipop = switch (selec) {
+            case 0 -> 'D'; //Docente
+            case 1 -> 'E'; //Estudiante
+            case 2 -> 'A'; //Empleado
+            default -> 'N'; //No determinado
+        };
+        
+        if(per.getTipo() == tipop){
+            //no cambio
+            per.setNombres(this.txtNombres.getText());
+            per.setApellidos(this.txtApellidos1.getText());
+            per.setCi(this.txtCi.getText());
+            per.setFechaNac(this.txtFecha_nacimiento.getDate());
+            
+            //Registramos los cambios en la persona
+            perD.modificar(per);
+            
+            JPanel pn = (JPanel)this.pnTipo.getComponent(0);
+            switch(tipop){
+                case 'D'://Docente
+                    Docente doce = new Docente();
+                    doce.Cargar(idPer);
+                    JTextField jtc = (JTextField)pn.getComponent(1);
+                    doce.setContrato(jtc.getText());
+                    doce.Actualizar();
+                    break;
+                case 'E'://Estudiante
+                    Estudiante est = new Estudiante();
+                    est.Cargar(idPer);
+                    JTextField jtr = (JTextField)pn.getComponent(1);                    
+                    est.setRu(Integer.parseInt(jtr.getText()));
+                    JDateChooser dtch = (JDateChooser)pn.getComponent(3);
+                    est.setFecha_ingreso(dtch.getDate());
+                    JComboBox cmb = (JComboBox)pn.getComponent(5);
+                    char tipoe;
+                    tipoe = switch(cmb.getSelectedIndex()){
+                        case 0 ->  'B';
+                        case 1 -> 'M';
+                        case 2 -> 'S';
+                        default -> 'X';
+                    };
+                    est.setTipo_estudiante(tipoe);
+                    est.Actualizar();
+                    break;
+                case 'A'://Empleado
+                    Empleado emp = new Empleado();
+                    emp.Cargar(idPer);
+                    JTextField txcod = (JTextField)pn.getComponent(1);
+                    emp.setCodigo_marcacion(Integer.parseInt(txcod.getText()));
+                    
+                    JTextField txtcar = (JTextField)pn.getComponent(3);
+                    emp.setCargo(txtcar.getText());
+                    
+                    emp.Actualizar();
+                    
+                    break;
+            }
+            
+            
+            
+            
+        } else {
+            
+        }
+        
+        this.setVisible(false);
+        
+    }//GEN-LAST:event_jLabel1MouseClicked
+
+    private void jLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseEntered
+        // TODO add your handling code here:
+        btnGrabar.setBackground(new java.awt.Color(255,153,0));
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));    
+    }//GEN-LAST:event_jLabel1MouseEntered
+
+    private void jLabel1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseExited
+        // TODO add your handling code here:        
+        btnGrabar.setBackground(new java.awt.Color(0,213,245));
+        jLabel1.setForeground(new java.awt.Color(3,7,71));   
+        
+    }//GEN-LAST:event_jLabel1MouseExited
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

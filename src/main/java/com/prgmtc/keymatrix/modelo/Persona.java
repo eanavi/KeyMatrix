@@ -16,7 +16,7 @@ public class Persona {
 
         
     public Persona(String Nombres, String Apellidos, 
-            String Ci, Date FechaNac, char Tipo, char Estado) {
+        String Ci, Date FechaNac, char Tipo, char Estado) {
         this.Nombres = Nombres;
         this.Apellidos = Apellidos;
         this.Ci = Ci;

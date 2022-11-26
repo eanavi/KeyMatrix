@@ -61,6 +61,66 @@ public class Empleado{
             }
         }
     }
+    
+    public void Actualizar(){
+        String consulta = "update empleado set codigo_marcacion = " + this.codigo_marcacion + ", cargo = '" + this.cargo + "' "
+                + " where idempleado = " + this.idempleado;
+        
+        try{
+            con = bd.establecerConexion();
+
+            ps = con.prepareStatement(consulta);
+            ps.execute();
+            
+        } catch(SQLException sqle){
+            System.out.println("SQLState: "  + sqle.getSQLState());
+            System.out.println("SQLErrorCode: "  + sqle.getErrorCode());
+        } finally{
+            if(con != null ){
+                try{
+                    ps.close();
+                    con.close();
+                } catch(SQLException e){
+                    System.out.println("Error " + e.getMessage());
+                }
+            }
+        }
+    }
+    
+    
+    public void Cargar(int idPersona){
+        String consulta = "select idempleado, idpersona, codigo_marcacion, cargo, estado "
+                + " from empleado where estado = 'V' and idpersona =  " + idPersona + ";";
+        try{
+            con = bd.establecerConexion();
+
+            ps = con.prepareStatement(consulta);
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                this.idempleado = rs.getInt("idempleado");
+                this.idpersona = rs.getInt("idpersona");
+                this.codigo_marcacion = rs.getInt("codigo_marcacion");
+                this.cargo = rs.getString("cargo");
+                this.estado = rs.getString("estado").charAt(0);
+            }
+            
+        } catch(SQLException sqle){
+            System.out.println("SQLState: "  + sqle.getSQLState());
+            System.out.println("SQLErrorCode: "  + sqle.getErrorCode());
+        } finally{
+            if(con != null ){
+                try{
+                    ps.close();
+                    con.close();
+                } catch(SQLException e){
+                    System.out.println("Error " + e.getMessage());
+                }
+            }
+        }
+        
+        
+    }
 
     
     

@@ -18,13 +18,11 @@ public class Docente {
     private String contrato;
     private char estado;
     
-    
     BaseDat bd = new BaseDat();
     Connection con;
     PreparedStatement ps;
     ResultSet rs;
     
-
     public Docente() {
     }
     
@@ -35,6 +33,34 @@ public class Docente {
         this.estado = estado;
     }
     
+    /*
+    Insercion de un registro en la base de datos con la informacion del docente
+    */
+    
+    public void Actualizar(){
+        String consulta = "update docente set contrato = '" + this.contrato + "' where iddocente = " + this.iddocente;
+        
+        try{
+            con = bd.establecerConexion();
+
+            ps = con.prepareStatement(consulta);
+            ps.execute();
+            
+        } catch(SQLException sqle){
+            System.out.println("SQLState: "  + sqle.getSQLState());
+            System.out.println("SQLErrorCode: "  + sqle.getErrorCode());
+        } finally{
+            if(con != null ){
+                try{
+                    ps.close();
+                    con.close();
+                } catch(SQLException e){
+                    System.out.println("Error " + e.getMessage());
+                }
+            }
+        }
+    }
+    
     public void Insertar(){
         String consulta = "INSERT INTO DOCENTE(idpersona, contrato, estado)"
                 + " values (" + this.idpersona + ",'" + this.contrato + "','" + this.estado + "')";
@@ -43,6 +69,42 @@ public class Docente {
 
             ps = con.prepareStatement(consulta);
             ps.execute();
+            
+        } catch(SQLException sqle){
+            System.out.println("SQLState: "  + sqle.getSQLState());
+            System.out.println("SQLErrorCode: "  + sqle.getErrorCode());
+        } finally{
+            if(con != null ){
+                try{
+                    ps.close();
+                    con.close();
+                } catch(SQLException e){
+                    System.out.println("Error " + e.getMessage());
+                }
+            }
+        }
+    }
+    
+    /*
+    Recuperacion de datos de un docente 
+    */
+    public void Cargar(int idpersona){
+        String  consulta = "select iddocente, idpersona, contrato, estado "
+                + "from docente where estado = 'V' and idpersona = " + idpersona + ";";
+        
+        try{
+            con = bd.establecerConexion();
+
+            ps = con.prepareStatement(consulta);
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                this.iddocente = rs.getInt("iddocente");
+                this.idpersona = rs.getInt("idpersona");
+                this.contrato = rs.getString("contrato");
+                this.estado = rs.getString("estado").charAt(0);
+            }
+            
             
         } catch(SQLException sqle){
             System.out.println("SQLState: "  + sqle.getSQLState());
@@ -91,6 +153,4 @@ public class Docente {
     public void setEstado(char estado) {
         this.estado = estado;
     }
-    
-    
 }

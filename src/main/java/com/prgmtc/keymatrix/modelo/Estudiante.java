@@ -41,10 +41,67 @@ public class Estudiante {
         this.estado = estado;
     }
     
+    public void Cargar(int idpersona){
+        String consulta = "select idestudiante, idpersona, ru, fecha_ingreso, tipo, estado "
+                + "from estudiante where estado = 'V' and idpersona = "+idpersona+";";
+        try{
+            con = bd.establecerConexion();
+
+            ps = con.prepareStatement(consulta);
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                this.idestudiante = rs.getInt("idestudiante");
+                this.idpersona = rs.getInt("idpersona");
+                this.ru = rs.getInt("ru");
+                this.fecha_ingreso = rs.getDate("fecha_ingreso");
+                this.tipo_estudiante = rs.getString("tipo").charAt(0);
+                this.estado = rs.getString("estado").charAt(0);
+            }
+        } catch(SQLException sqle){
+            System.out.println("SQLState: "  + sqle.getSQLState());
+            System.out.println("SQLErrorCode: "  + sqle.getErrorCode());
+        } finally{
+            if(con != null ){
+                try{
+                    ps.close();
+                    con.close();
+                } catch(SQLException e){
+                    System.out.println("Error " + e.getMessage());
+                }
+            }
+        }
+    }
+    
     public void Insertar(){
         String consulta = "INSERT INTO ESTUDIANTE(idpersona, ru, , fecha_ingreso, tipo, estado)"
                 + " values (" + this.idpersona + "," + this.ru  + "','" + this.fecha_ingreso + "', '"
                 + this.tipo_estudiante + "', 'V')";
+        try{
+            con = bd.establecerConexion();
+
+            ps = con.prepareStatement(consulta);
+            ps.execute();
+            
+        } catch(SQLException sqle){
+            System.out.println("SQLState: "  + sqle.getSQLState());
+            System.out.println("SQLErrorCode: "  + sqle.getErrorCode());
+        } finally{
+            if(con != null ){
+                try{
+                    ps.close();
+                    con.close();
+                } catch(SQLException e){
+                    System.out.println("Error " + e.getMessage());
+                }
+            }
+        }
+    }
+    
+    public void Actualizar(){
+        String consulta = "update estudiante set ru = " + this.ru + ", fecha_ingreso = '" + this.fecha_ingreso + "',"
+                + " tipo = '" + this.tipo_estudiante + "' where idestudiante = " + this.idestudiante;
+        
         try{
             con = bd.establecerConexion();
 

@@ -8,7 +8,10 @@ package com.prgmtc.keymatrix.vista;
 
 import com.prgmtc.keymatrix.modelo.UsuarioDAO;
 import com.prgmtc.keymatrix.modelo.Usuario;
+import com.prgmtc.keymatrix.modelo.Persona;
+import com.prgmtc.keymatrix.modelo.PersonaDAO;
 import java.util.Arrays;
+import javax.swing.JOptionPane;
 public class Login extends javax.swing.JFrame {
 
     /**
@@ -232,11 +235,30 @@ public class Login extends javax.swing.JFrame {
                 this.setVisible(false);
                 this.dispose();
                 
-                frmPersona fp = new frmPersona();
-                fp.setVisible(true);
+                Persona per = new Persona();
+                PersonaDAO perDa = new PersonaDAO();
+                per = perDa.PerUsuario(txtUsuario.getText());
+                
+                switch (per.getTipo()){
+                    case 'A' -> {
+                        //Empleado
+                        frmPrincipal prin = new frmPrincipal();
+                        //frmPersona fp = new frmPersona();
+                        prin.setSize(800, 540);
+                        prin.setVisible(true);
+                    }
+                    case 'D' -> {
+                        frmDocenteA fd = new frmDocenteA(per.getIdPersona());
+                        fd.setVisible(true);
+                    }
+                }
                 
                 
+            } else
+            {
+                JOptionPane.showMessageDialog(null,"Credenciales no autorizadas");
             }
+            
         }
         
 

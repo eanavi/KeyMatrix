@@ -1,6 +1,7 @@
 package com.prgmtc.keymatrix.vista;
 
 import com.prgmtc.keymatrix.vista.per.pnBusqueda;
+import com.prgmtc.keymatrix.vista.per.pnBusModif;
 import com.prgmtc.keymatrix.vista.per.pnNuevoRegistro;
 import javax.swing.JOptionPane;
 
@@ -309,9 +310,13 @@ public class frmPersona extends javax.swing.JFrame {
 
     private void lblOp3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblOp3MouseClicked
         // TODO add your handling code here:
-        pnBusqueda pnb = new pnBusqueda();
-        if(!pnb.isShowing())
-            JOptionPane.showMessageDialog(null, "Debe Seleccionar una Fila");
+        pnBusModif pnm = new pnBusModif();
+        pnm.setSize(800, 540);
+        pnm.setLocation(0,0);
+        pnlContenido.removeAll();
+        pnlContenido.add(pnm);
+        pnlContenido.revalidate();
+        pnlContenido.repaint();        
         
     }//GEN-LAST:event_lblOp3MouseClicked
 
